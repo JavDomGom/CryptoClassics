@@ -15,11 +15,10 @@ class Application(Frame):
         self.updated = 'Updated: 2020/02/20'
         self.copyleft = 'Copyleft 2020, written by Javier Domínguez Gómez'
         self.description = description
-        self.about_text = '''This program is free software:  you can  \
-redistribute it
-        and/or modify it under the terms of the GNU General
-        Public License as published by the Free Software
-        Foundation, either version 3 of the License.'''
+        self.about = '''This program is free software: you can redistribute it
+and/or modify it under the terms of the GNU General
+Public License as published by the Free Software
+Foundation, either version 3 of the License.'''
         self.gplv3_image = 'img/gplv3-127x51.png'
         self.padx = 3
         self.pady = 3
@@ -55,12 +54,72 @@ redistribute it
         menubar = Menu(self.master, fg=self.fg_color, borderwidth=1)
         self.master.config(menu=menubar)
 
+        # Build Cryptosystems menu.
+        cryptosystems_list = [
+            ('Pure displacement',),
+            ('Pure decimation',),
+            ('Affine cipher',),
+            ('Gronsfeld',),
+            ('Vigenère',),
+            ('Continuous key',),
+            ('Beaufort',),
+            ('Hill',),
+            ('Playfair',),
+            ('Transposition',),
+            ('Binary Vernam',),
+            ('Enigma',)
+        ]
+
+        cryptosystems_menu = Menu(menubar, tearoff=0)
+
+        for i, cs in enumerate(cryptosystems_list):
+            if i in (3, 7, 9, 11):
+                cryptosystems_menu.add_separator()
+
+            cryptosystems_menu.add_command(
+                label=f'{cs[0]}',
+                command=self.master.destroy
+            )
+
+        # Build Tools menu.
+        tools_list = [
+            ('Primality test',),
+            ('Modular arithmetic',),
+            ('GDC and LCM',),
+            ('Reduced Residue System',),
+            ('Euler\'s totient function',),
+            ('Modular multiplicative inverse',),
+            ('Matrices',),
+            ('Language statistics',),
+            ('Text grouping',)
+        ]
+
+        tools_menu = Menu(menubar, tearoff=0)
+
+        for i, t in enumerate(tools_list):
+            if i in (7, 8):
+                tools_menu.add_separator()
+
+            tools_menu.add_command(
+                label=f'{t[0]}',
+                command=self.master.destroy
+            )
+
         # Build Options menu.
+        options_list = [
+            ('Spanish Z27 (A-Z)',),
+            ('Spanish Z37 (A-Z, 0-9)',),
+            ('English Z26 (A-Z)',),
+            ('English Z36 (A-Z, 0-9)',),
+            ('ASCII 191',)
+        ]
+
         options_menu = Menu(menubar, tearoff=0)
-        options_menu.add_command(
-            label='Exit',
-            command=self.master.destroy
-        )
+        for op in options_list:
+            options_menu.add_command(
+                label=f'{op[0]}',
+                command=self.master.destroy
+            )
 
         # Build Help menu.
         help_menu = Menu(menubar, tearoff=0)
@@ -75,6 +134,8 @@ redistribute it
         )
 
         # Build menubar with all previously menus.
+        menubar.add_cascade(label='Cryptosystems', menu=cryptosystems_menu)
+        menubar.add_cascade(label='Tools', menu=tools_menu)
         menubar.add_cascade(label='Options', menu=options_menu)
         menubar.add_cascade(label='Help', menu=help_menu)
 
@@ -107,7 +168,7 @@ redistribute it
 
         lbl_gplv3 = Label(
             tpl_about,
-            text=self.about_text,
+            text=self.about,
             justify='center'
         )
         lbl_gplv3.grid(row=1, column=0, padx=self.padx+15, pady=self.pady)
