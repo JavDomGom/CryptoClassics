@@ -1,7 +1,8 @@
 import logging as log
 from pathlib import Path
-from showdoc import ShowDoc
 from tkinter import Toplevel, Frame, Menu, PhotoImage, Button, Label
+from resources.showDoc import ShowDoc as sd
+from resources.pureDisplacement import PureDisplacement as pd
 
 
 class Application(Frame):
@@ -34,7 +35,7 @@ Foundation, either version 3 of the License.'''
         self.pack()
         self._configure_logs()
         self._create_menubar()
-        self._create_frame()
+        self._create_parent_frame()
 
         log.info(f'Start {self.name} {self.version}.')
 
@@ -49,6 +50,11 @@ Foundation, either version 3 of the License.'''
             format=self.log_format
         )
 
+    def _build_cryptosystem(self, cs):
+        print(cs)
+        if cs == 'Pure displacement':
+            pd(self.master, cs)
+
     def _create_menubar(self):
         # Build menubar.
         menubar = Menu(self.master, fg=self.fg_color, borderwidth=1)
@@ -56,18 +62,18 @@ Foundation, either version 3 of the License.'''
 
         # Build Cryptosystems menu.
         cryptosystems_list = [
-            ('Pure displacement',),
-            ('Pure decimation',),
-            ('Affine cipher',),
-            ('Gronsfeld',),
-            ('Vigenère',),
-            ('Continuous key',),
-            ('Beaufort',),
-            ('Hill',),
-            ('Playfair',),
-            ('Transposition',),
-            ('Binary Vernam',),
-            ('Enigma',)
+            'Pure displacement',
+            'Pure decimation',
+            'Affine cipher',
+            'Gronsfeld',
+            'Vigenère',
+            'Continuous key',
+            'Beaufort',
+            'Hill',
+            'Playfair',
+            'Transposition',
+            'Binary Vernam',
+            'Enigma'
         ]
 
         cryptosystems_menu = Menu(menubar, tearoff=0)
@@ -77,21 +83,21 @@ Foundation, either version 3 of the License.'''
                 cryptosystems_menu.add_separator()
 
             cryptosystems_menu.add_command(
-                label=f'{cs[0]}',
-                command=self.master.destroy
+                label=f'{cs}',
+                command=lambda cs=cs: self._build_cryptosystem(cs)
             )
 
         # Build Tools menu.
         tools_list = [
-            ('Primality test',),
-            ('Modular arithmetic',),
-            ('GDC and LCM',),
-            ('Reduced Residue System',),
-            ('Euler\'s totient function',),
-            ('Modular multiplicative inverse',),
-            ('Matrices',),
-            ('Language statistics',),
-            ('Text grouping',)
+            'Primality test',
+            'Modular arithmetic',
+            'GDC and LCM',
+            'Reduced Residue System',
+            'Euler\'s totient function',
+            'Modular multiplicative inverse',
+            'Matrices',
+            'Language statistics',
+            'Text grouping'
         ]
 
         tools_menu = Menu(menubar, tearoff=0)
@@ -101,23 +107,23 @@ Foundation, either version 3 of the License.'''
                 tools_menu.add_separator()
 
             tools_menu.add_command(
-                label=f'{t[0]}',
+                label=f'{t}',
                 command=self.master.destroy
             )
 
         # Build Options menu.
         options_list = [
-            ('Spanish Z27 (A-Z)',),
-            ('Spanish Z37 (A-Z, 0-9)',),
-            ('English Z26 (A-Z)',),
-            ('English Z36 (A-Z, 0-9)',),
-            ('ASCII 191',)
+            'Spanish Z27 (A-Z)',
+            'Spanish Z37 (A-Z, 0-9)',
+            'English Z26 (A-Z)',
+            'English Z36 (A-Z, 0-9)',
+            'ASCII 191'
         ]
 
         options_menu = Menu(menubar, tearoff=0)
         for op in options_list:
             options_menu.add_command(
-                label=f'{op[0]}',
+                label=f'{op}',
                 command=self.master.destroy
             )
 
@@ -125,7 +131,7 @@ Foundation, either version 3 of the License.'''
         help_menu = Menu(menubar, tearoff=0)
         help_menu.add_command(
             label='View license',
-            command=lambda: ShowDoc(self.master, self.license)
+            command=lambda: sd(self.master, self.license)
         )
         help_menu.add_separator()
         help_menu.add_command(
@@ -139,7 +145,7 @@ Foundation, either version 3 of the License.'''
         menubar.add_cascade(label='Options', menu=options_menu)
         menubar.add_cascade(label='Help', menu=help_menu)
 
-    def _create_frame(self):
+    def _create_parent_frame(self):
         # Build parent frame.
         frm = Frame(
             self.master,

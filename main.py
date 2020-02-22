@@ -1,4 +1,4 @@
-from application import Application
+from resources.application import Application
 from tkinter import Tk
 
 name = 'CryptoClassics'
