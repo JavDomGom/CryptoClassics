@@ -24,15 +24,19 @@ class PureDisplacement(Frame):
             bg='#ff0000',
             bd=5
         )
-        frm_0.pack(fill='both', side='top')
-        frm_0.grid_columnconfigure(0, weight=1)
-        frm_0.grid_columnconfigure(1, weight=1)
-        frm_0.grid_columnconfigure(2, weight=1)
-        frm_0.grid_columnconfigure(3, weight=1)
-        frm_0.grid_columnconfigure(4, minsize=30)
+        frm_0.pack(side='top', fill='both')
+
+        frm_0L = Frame(
+            frm_0,
+            bg='#00ff00',
+            bd=5
+        )
+        frm_0L.pack(side='left', fill='both')
+        frm_0L.grid_columnconfigure(0, weight=1)
+        frm_0L.grid_columnconfigure(0, minsize=30)
 
         btn_crypt = Button(
-            frm_0,
+            frm_0L,
             text='Crypt',
             command=self.master.destroy
         )
@@ -41,7 +45,7 @@ class PureDisplacement(Frame):
         )
 
         btn_decrypt = Button(
-            frm_0,
+            frm_0L,
             text='Decrypt',
             command=self.master.destroy
         )
@@ -50,7 +54,7 @@ class PureDisplacement(Frame):
         )
 
         btn_key = Button(
-            frm_0,
+            frm_0L,
             text='Key',
             command=self.master.destroy
         )
@@ -59,7 +63,7 @@ class PureDisplacement(Frame):
         )
 
         btn_help = Button(
-            frm_0,
+            frm_0L,
             text='Help',
             command=self.master.destroy
         )
@@ -67,28 +71,37 @@ class PureDisplacement(Frame):
             row=0, column=3, padx=self.padx, pady=self.pady, sticky='w'
         )
 
-        lbl_load = Label(
+        frm_0L = Frame(
             frm_0,
+            bg='#0000ff',
+            bd=5
+        )
+        frm_0L.pack(side='right', fill='both')
+        frm_0L.grid_columnconfigure(0, weight=1)
+        frm_0L.grid_columnconfigure(0, minsize=30)
+
+        lbl_load = Label(
+            frm_0L,
             text='Load:',
             anchor='e'
         )
         lbl_load.grid(
-            row=0, column=4, padx=self.padx, pady=self.pady, sticky='e'
+            row=0, column=0, padx=self.padx, pady=self.pady, sticky='e'
         )
 
         btn_load_example = Button(
-            frm_0,
+            frm_0L,
             text='Test example',
             command=self.master.destroy
         )
         btn_load_example.grid(
-            row=0, column=5, padx=self.padx, pady=self.pady, sticky='e'
+            row=0, column=1, padx=self.padx, pady=self.pady, sticky='e'
         )
 
         # Middle frame.
         frm_1 = Frame(
             tpl_pd,
-            bg='#00ff00',
+            bg='#ff00ff',
             bd=5
         )
         frm_1.pack(expand=True, fill='both')
