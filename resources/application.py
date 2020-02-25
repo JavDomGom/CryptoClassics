@@ -13,7 +13,7 @@ class Application(Frame):
         self.fg_color = '#000000'
         self.name = name
         self.version = version
-        self.updated = 'Updated: 2020/02/20'
+        self.updated = 'Updated: 2020/02/25'
         self.copyleft = 'Copyleft 2020, written by Javier Domínguez Gómez'
         self.description = description
         self.about = '''This program is free software: you can redistribute it

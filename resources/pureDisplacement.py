@@ -9,6 +9,8 @@ class PureDisplacement(Frame):
         self.name = name
         self.padx = 3
         self.pady = 3
+        self.txt_width = 71
+        self.txt_height = 3
         self.font = ('Courier New', 10)
         self.pack()
         self._show()
@@ -21,11 +23,11 @@ class PureDisplacement(Frame):
         # Top frame.
         frm_0 = Frame(
             tpl_pd,
-            bg='#ff0000',
-            bd=5
+            bg='#ff0000'
         )
         frm_0.pack(side='top', fill='both')
 
+        # Top frame left.
         frm_0L = Frame(
             frm_0,
             bg='#00ff00',
@@ -71,6 +73,7 @@ class PureDisplacement(Frame):
             row=0, column=3, padx=self.padx, pady=self.pady, sticky='w'
         )
 
+        # Top frame right.
         frm_0L = Frame(
             frm_0,
             bg='#0000ff',
@@ -101,18 +104,19 @@ class PureDisplacement(Frame):
         # Middle frame.
         frm_1 = Frame(
             tpl_pd,
-            bg='#ff00ff',
+            bg='#ffff00',
             bd=5
         )
         frm_1.pack(expand=True, fill='both')
         frm_1.grid_propagate(True)
         frm_1.grid_columnconfigure(0, weight=1)
         frm_1.grid_rowconfigure(0, weight=1)
+        frm_1.grid_rowconfigure(1, weight=1)
 
         lbl_input = Label(
             frm_1,
             text='Input:',
-            justify='right'
+            anchor='w'
         )
         lbl_input.grid(
             row=0, column=0, padx=self.padx, pady=self.pady, sticky='we'
@@ -120,13 +124,69 @@ class PureDisplacement(Frame):
 
         txt_input = Text(
             frm_1,
-            width=75,
-            height=3,
+            width=self.txt_width,
+            height=self.txt_height,
             font=self.font,
             state='normal'
         )
         scrollb_input = Scrollbar(frm_1)
         scrollb_input.config(command=txt_input.yview)
         txt_input.config(yscrollcommand=scrollb_input.set)
-        scrollb_input.grid(row=0, column=2, pady=self.pady, sticky='nsew')
-        txt_input.grid(row=0, column=1, pady=self.pady, sticky='nsew')
+        scrollb_input.grid(row=0, column=2, pady=self.pady+5, sticky='nsew')
+        txt_input.grid(row=0, column=1, pady=self.pady+5, sticky='nsew')
+
+        lbl_open_input_file = Label(
+            frm_1,
+            text='Input file:'
+        )
+        lbl_open_input_file.grid(
+            row=0, column=3, padx=self.padx, pady=self.pady+5, sticky='n'
+        )
+
+        btn_open_input_file = Button(
+            frm_1,
+            text='Open',
+            command=self.master.destroy
+        )
+        btn_open_input_file.grid(
+            row=0, column=3, padx=self.padx, pady=self.pady+5, sticky='s'
+        )
+
+        lbl_output = Label(
+            frm_1,
+            text='Output:',
+            anchor='w'
+        )
+        lbl_output.grid(
+            row=1, column=0, padx=self.padx, pady=self.pady, sticky='we'
+        )
+
+        txt_output = Text(
+            frm_1,
+            width=self.txt_width,
+            height=self.txt_height,
+            font=self.font,
+            state='normal'
+        )
+        scrollb_output = Scrollbar(frm_1)
+        scrollb_output.config(command=txt_output.yview)
+        txt_output.config(yscrollcommand=scrollb_output.set)
+        scrollb_output.grid(row=1, column=2, pady=self.pady+5, sticky='nsew')
+        txt_output.grid(row=1, column=1, pady=self.pady+5, sticky='nsew')
+
+        lbl_save_output_file = Label(
+            frm_1,
+            text='Output file:'
+        )
+        lbl_save_output_file.grid(
+            row=1, column=3, padx=self.padx, pady=self.pady+5, sticky='n'
+        )
+
+        btn_save_output_file = Button(
+            frm_1,
+            text='Save',
+            command=self.master.destroy
+        )
+        btn_save_output_file.grid(
+            row=1, column=3, padx=self.padx, pady=self.pady+5, sticky='s'
+        )
