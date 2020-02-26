@@ -1,4 +1,6 @@
+import time
 from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label
+from tkinter.ttk import Progressbar
 
 
 class PureDisplacement(Frame):
@@ -9,7 +11,7 @@ class PureDisplacement(Frame):
         self.name = name
         self.padx = 3
         self.pady = 3
-        self.txt_width = 71
+        self.txt_width = 50
         self.txt_height = 3
         self.font = ('Courier New', 10)
         self.pack()
@@ -119,7 +121,7 @@ class PureDisplacement(Frame):
             anchor='w'
         )
         lbl_input.grid(
-            row=0, column=0, padx=self.padx, pady=self.pady, sticky='we'
+            row=0, column=0, padx=self.padx, pady=self.pady, sticky='ew'
         )
 
         txt_input = Text(
@@ -158,7 +160,7 @@ class PureDisplacement(Frame):
             anchor='w'
         )
         lbl_output.grid(
-            row=1, column=0, padx=self.padx, pady=self.pady, sticky='we'
+            row=1, column=0, padx=self.padx, pady=self.pady, sticky='ew'
         )
 
         txt_output = Text(
@@ -190,3 +192,52 @@ class PureDisplacement(Frame):
         btn_save_output_file.grid(
             row=1, column=3, padx=self.padx, pady=self.pady+5, sticky='s'
         )
+
+        # Bottom frame.
+        frm_2 = Frame(
+            tpl_pd,
+            bg='#00ffff',
+            bd=5
+        )
+        frm_2.pack(expand=True, fill='both')
+        frm_2.grid_propagate(True)
+        frm_2.grid_columnconfigure(0, weight=1)
+        frm_2.grid_rowconfigure(0, weight=1)
+
+        lbl_input = Label(
+            frm_2,
+            text='Ready:',
+            anchor='w'
+        )
+        lbl_input.grid(
+            row=0, column=0, padx=self.padx, pady=self.pady, sticky='w'
+        )
+
+        progressBar = Progressbar(
+            frm_2,
+            orient='horizontal',
+            mode='determinate',
+            length=500,
+            maximum=100
+        )
+        progressBar.place(anchor='sw', x=1, bordermode="outside")
+        progressBar.grid(row=0, column=1, pady=self.pady, sticky='w')
+
+        for i in range(101):
+            time.sleep(0.05)
+            progressBar["value"] = i
+            progressBar.update()
+
+        # pb_ready = Progressbar(
+        #     frm_2,
+        #     orient="horizontal",
+        #     length=286,
+        #     mode="determinate"
+        # )
+        # pb_ready['maximum'] = 100
+        # for i in range(101):
+        #     time.sleep(0.05)
+        #     pb_ready["value"] = i
+        #     pb_ready.update()
+        #     pb_ready["value"] = 0
+        # pb_ready.grid(row=0, column=1, pady=self.pady, sticky='nsew')
