@@ -14,6 +14,34 @@ class PureDisplacement(Frame):
         self.txt_width = 50
         self.txt_height = 3
         self.font = ('Courier New', 10)
+        self.Z = {
+            'a': 1,
+            'b': 2,
+            'c': 3,
+            'd': 4,
+            'e': 5,
+            'f': 6,
+            'g': 7,
+            'h': 8,
+            'i': 9,
+            'j': 10,
+            'k': 11,
+            'l': 12,
+            'm': 13,
+            'n': 14,
+            'o': 15,
+            'p': 16,
+            'q': 17,
+            'r': 18,
+            's': 19,
+            't': 20,
+            'u': 21,
+            'v': 22,
+            'w': 23,
+            'x': 24,
+            'y': 25,
+            'z': 26
+        }
         self.pack()
         self._show()
 
@@ -228,16 +256,16 @@ class PureDisplacement(Frame):
             progressBar["value"] = i
             progressBar.update()
 
-        # pb_ready = Progressbar(
-        #     frm_2,
-        #     orient="horizontal",
-        #     length=286,
-        #     mode="determinate"
-        # )
-        # pb_ready['maximum'] = 100
-        # for i in range(101):
-        #     time.sleep(0.05)
-        #     pb_ready["value"] = i
-        #     pb_ready.update()
-        #     pb_ready["value"] = 0
-        # pb_ready.grid(row=0, column=1, pady=self.pady, sticky='nsew')
+        def _displacement(self, alpha, k, input):
+            max_size = len(alpha)
+            output = ''
+
+            for c in input:
+                new_position = alpha[c] + k
+                if new_position > max_size:
+                    new_position -= max_size
+                for kz, vz in alpha.items():
+                    if new_position == vz:
+                        output += kz
+
+            return output.upper()
