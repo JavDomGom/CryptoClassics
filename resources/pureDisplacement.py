@@ -1,14 +1,16 @@
 import time
-from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label
+import json
+from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, END
 from tkinter.ttk import Progressbar
 
 
 class PureDisplacement(Frame):
 
-    def __init__(self, master, name):
+    def __init__(self, master, name, alpha):
         super().__init__(master)
         self.master = master
         self.name = name
+        self.alpha = alpha
         self.padx = 3
         self.pady = 3
         self.txt_width = 50
@@ -16,6 +18,22 @@ class PureDisplacement(Frame):
         self.font = ('Courier New', 10)
         self.pack()
         self._show()
+
+    def _displacement(self, k, input):
+        alpha = json.loads(self.alpha.get())
+        max_size = len(alpha)
+        print(alpha, k, input, max_size)
+        output = ''
+
+        for c in input:
+            new_position = alpha[c] + k
+            if new_position > max_size:
+                new_position -= max_size
+            for kz, vz in alpha.items():
+                if new_position == vz:
+                    output += kz
+
+        return output.upper()
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
@@ -42,7 +60,7 @@ class PureDisplacement(Frame):
         btn_crypt = Button(
             frm_0L,
             text='Crypt',
-            command=self.master.destroy
+            command=lambda: self._displacement(3, txt_input.get("1.0", END))
         )
         btn_crypt.grid(
             row=0, column=0, padx=self.padx, pady=self.pady, sticky='w'
@@ -227,17 +245,3 @@ class PureDisplacement(Frame):
             time.sleep(0.05)
             progressBar["value"] = i
             progressBar.update()
-
-        def _displacement(self, alpha, k, input):
-            max_size = len(alpha)
-            output = ''
-
-            for c in input:
-                new_position = alpha[c] + k
-                if new_position > max_size:
-                    new_position -= max_size
-                for kz, vz in alpha.items():
-                    if new_position == vz:
-                        output += kz
-
-            return output.upper()

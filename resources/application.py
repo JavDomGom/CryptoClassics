@@ -37,6 +37,10 @@ Foundation, either version 3 of the License.'''
             'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22,
             'w': 23, 'x': 24, 'y': 25, 'z': 26
         }
+        self.Z_37 = {}
+        self.Z_26 = {}
+        self.Z_36 = {}
+        self.ASCII_191 = {}
         self.alpha = StringVar()
 
         self.pack()
@@ -60,7 +64,7 @@ Foundation, either version 3 of the License.'''
     def _build_cryptosystem(self, cs):
         print(cs)
         if cs == 'Pure displacement':
-            pd(self.master, cs)
+            pd(self.master, cs, self.alpha)
 
     def _create_menubar(self):
         # Build menubar.
@@ -121,10 +125,10 @@ Foundation, either version 3 of the License.'''
         # Build Options menu.
         options_list = [
             ('Spanish Z27 (A-Z)', self.Z_27),
-            ('Spanish Z37 (A-Z, 0-9)', self.Z_27),
-            ('English Z26 (A-Z)', self.Z_27),
-            ('English Z36 (A-Z, 0-9)', self.Z_27),
-            ('ASCII 191', self.Z_27)
+            ('Spanish Z37 (A-Z, 0-9)', self.Z_37),
+            ('English Z26 (A-Z)', self.Z_26),
+            ('English Z36 (A-Z, 0-9)', self.Z_36),
+            ('ASCII 191', self.ASCII_191)
         ]
 
         options_menu = Menu(menubar, tearoff=0)
