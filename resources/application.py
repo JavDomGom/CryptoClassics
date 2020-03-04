@@ -31,16 +31,12 @@ Foundation, either version 3 of the License.'''
         self.log_path = 'log'
         self.log_file = f'{self.log_path}/cryptoclassics.log'
         self.log_format = '%(asctime)-15s [%(levelname)s] %(message)s'
-        self.Z_27 = {
-            'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8,
-            'i': 9, 'j': 10, 'k': 11, 'l': 12, 'm': 13, 'n': 14, 'o': 15,
-            'p': 16, 'q': 17, 'r': 18, 's': 19, 't': 20, 'u': 21, 'v': 22,
-            'w': 23, 'x': 24, 'y': 25, 'z': 26
-        }
-        self.Z_37 = {}
-        self.Z_26 = {}
-        self.Z_36 = {}
-        self.ASCII_191 = {}
+        self.json_path = 'resources/json'
+        self.Z_27 = 'Z_27.json'
+        self.Z_37 = 'Z_37.json'
+        self.Z_26 = 'Z_26.json'
+        self.Z_36 = 'Z_36.json'
+        self.ASCII_191 = 'ASCII_191.json'
         self.alpha = StringVar()
 
         self.pack()
@@ -124,11 +120,11 @@ Foundation, either version 3 of the License.'''
 
         # Build Options menu.
         options_list = [
-            ('Spanish Z27 (A-Z)', self.Z_27),
-            ('Spanish Z37 (A-Z, 0-9)', self.Z_37),
-            ('English Z26 (A-Z)', self.Z_26),
-            ('English Z36 (A-Z, 0-9)', self.Z_36),
-            ('ASCII 191', self.ASCII_191)
+            ('Spanish Z27 (A-Z)', f'{self.json_path}/{self.Z_27}'),
+            ('Spanish Z37 (A-Z, 0-9)', f'{self.json_path}/{self.Z_37}'),
+            ('English Z26 (A-Z)', f'{self.json_path}/{self.Z_26}'),
+            ('English Z36 (A-Z, 0-9)', f'{self.json_path}/{self.Z_36}'),
+            ('ASCII 191', f'{self.json_path}/{self.ASCII_191}')
         ]
 
         options_menu = Menu(menubar, tearoff=0)
@@ -138,7 +134,6 @@ Foundation, either version 3 of the License.'''
                 variable=self.alpha,
                 value=op[1]
             )
-        print(f'alpha = {self.alpha.get()}')
 
         # Build Help menu.
         help_menu = Menu(menubar, tearoff=0)

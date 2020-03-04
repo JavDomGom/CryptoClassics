@@ -1,6 +1,6 @@
 import time
 import json
-from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, END
+from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label
 from tkinter.ttk import Progressbar
 
 
@@ -10,7 +10,7 @@ class PureDisplacement(Frame):
         super().__init__(master)
         self.master = master
         self.name = name
-        self.alpha = alpha
+        self.alpha = alpha.get()
         self.padx = 3
         self.pady = 3
         self.txt_width = 50
@@ -19,10 +19,18 @@ class PureDisplacement(Frame):
         self.pack()
         self._show()
 
-    def _displacement(self, k, input):
-        alpha = json.loads(self.alpha.get())
+    def _read_alpha_file(self, file):
+        try:
+            with open(file, 'r') as f:
+                alpha = f.read().rstrip()
+                alpha = json.loads(alpha)
+                return alpha
+        except FileNotFoundError:
+            return False
+
+    def _displacement(self, k, input, txt_output):
+        alpha = self._read_alpha_file(self.alpha)
         max_size = len(alpha)
-        print(alpha, k, input, max_size)
         output = ''
 
         for c in input:
@@ -33,7 +41,8 @@ class PureDisplacement(Frame):
                 if new_position == vz:
                     output += kz
 
-        return output.upper()
+        txt_output.delete(1.0, 'end')
+        txt_output.insert('end', output.upper())
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
@@ -60,7 +69,11 @@ class PureDisplacement(Frame):
         btn_crypt = Button(
             frm_0L,
             text='Crypt',
-            command=lambda: self._displacement(3, txt_input.get("1.0", END))
+            command=lambda: self._displacement(
+                3,
+                txt_input.get(1.0, 'end').rstrip(),
+                txt_output
+            )
         )
         btn_crypt.grid(
             row=0, column=0, padx=self.padx, pady=self.pady, sticky='w'
