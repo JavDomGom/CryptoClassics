@@ -135,6 +135,9 @@ Foundation, either version 3 of the License.'''
                 value=op[1]
             )
 
+        # Set first element by default.
+        self.alpha.set(options_list[0][1])
+
         # Build Help menu.
         help_menu = Menu(menubar, tearoff=0)
         help_menu.add_command(

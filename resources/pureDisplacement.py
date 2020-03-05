@@ -43,6 +43,7 @@ class PureDisplacement(Frame):
 
         txt_output.delete(1.0, 'end')
         txt_output.insert('end', output.upper())
+        print(self.alpha)
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
