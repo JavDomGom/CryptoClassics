@@ -1,7 +1,7 @@
 import time
 import json
 from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label
-from tkinter.ttk import Progressbar
+from tkinter.ttk import Progressbar, Separator
 
 
 class PureDisplacement(Frame):
@@ -47,20 +47,18 @@ class PureDisplacement(Frame):
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
-        tpl_pd.resizable(1, 1)
+        tpl_pd.resizable(0, 0)
         tpl_pd.title(f'{self.name}')
 
         # Top frame.
         frm_0 = Frame(
-            tpl_pd,
-            bg='#ff0000'
+            tpl_pd
         )
         frm_0.pack(side='top', fill='both')
 
         # Top frame left.
         frm_0L = Frame(
             frm_0,
-            bg='#00ff00',
             bd=5
         )
         frm_0L.pack(side='left', fill='both')
@@ -110,7 +108,6 @@ class PureDisplacement(Frame):
         # Top frame right.
         frm_0L = Frame(
             frm_0,
-            bg='#0000ff',
             bd=5
         )
         frm_0L.pack(side='right', fill='both')
@@ -135,10 +132,12 @@ class PureDisplacement(Frame):
             row=0, column=1, padx=self.padx, pady=self.pady, sticky='e'
         )
 
+        sep = Separator(tpl_pd, orient='horizontal')
+        sep.pack(anchor='nw', fill='x')
+
         # Middle frame.
         frm_1 = Frame(
             tpl_pd,
-            bg='#ffff00',
             bd=5
         )
         frm_1.pack(expand=True, fill='both')
@@ -228,7 +227,6 @@ class PureDisplacement(Frame):
         # Bottom frame.
         frm_2 = Frame(
             tpl_pd,
-            bg='#00ffff',
             bd=5
         )
         frm_2.pack(expand=True, fill='both')
