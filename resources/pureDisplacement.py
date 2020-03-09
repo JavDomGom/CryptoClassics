@@ -1,7 +1,7 @@
 import time
 import json
-from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label
-from tkinter.ttk import Progressbar, Separator
+from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, IntVar
+from tkinter.ttk import Progressbar, Separator, Combobox
 
 
 class PureDisplacement(Frame):
@@ -16,6 +16,7 @@ class PureDisplacement(Frame):
         self.txt_width = 50
         self.txt_height = 3
         self.font = ('Courier New', 10)
+        self.key = IntVar()
         self.pack()
         self._show()
 
@@ -28,11 +29,11 @@ class PureDisplacement(Frame):
         except FileNotFoundError:
             return False
 
-    def _displacement(self, k, input, txt_output):
+    def _displacement(self, input, txt_output):
         alpha = self._read_alpha_file(self.alpha)
         max_size = len(alpha)
         output = ''
-
+        k = self.key.get()
         for c in input:
             new_position = alpha[c] + k
             if new_position > max_size:
@@ -69,8 +70,7 @@ class PureDisplacement(Frame):
             frm_0L,
             text='Crypt',
             command=lambda: self._displacement(
-                3,
-                txt_input.get(1.0, 'end').rstrip(),
+                txt_input.get(1.0, 'end').rstrip().replace(' ', ''),
                 txt_output
             )
         )
@@ -87,13 +87,18 @@ class PureDisplacement(Frame):
             row=0, column=1, padx=self.padx, pady=self.pady, sticky='w'
         )
 
-        btn_key = Button(
-            frm_0L,
-            text='Key',
-            command=self.master.destroy
+        def set_key(event):
+            self.key.set(cb_key.get())
+
+        cb_key = Combobox(frm_0L, state='readonly')
+        cb_key['values'] = [i for i in range(10)]
+
+        cb_key.current(0)
+        cb_key.bind(
+            '<<ComboboxSelected>>', set_key
         )
-        btn_key.grid(
-            row=0, column=2, padx=self.padx, pady=self.pady, sticky='w'
+        cb_key.grid(
+            row=0, column=2, padx=self.padx, pady=self.pady, sticky='ns'
         )
 
         btn_help = Button(
