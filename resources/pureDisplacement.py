@@ -1,16 +1,18 @@
 import time
 import json
+import re
 from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, IntVar
 from tkinter.ttk import Progressbar, Separator, Combobox
 
 
 class PureDisplacement(Frame):
 
-    def __init__(self, master, name, alpha):
+    def __init__(self, master, name, alpha_title, alpha_file):
         super().__init__(master)
         self.master = master
         self.name = name
-        self.alpha = alpha.get()
+        self.alpha_title = alpha_title.get()
+        self.alpha_file = alpha_file.get()
         self.padx = 3
         self.pady = 3
         self.txt_width = 50
@@ -29,12 +31,12 @@ class PureDisplacement(Frame):
         except FileNotFoundError:
             return False
 
-    def _displacement(self, input, txt_output):
-        alpha = self._read_alpha_file(self.alpha)
+    def _crypt(self, input, txt_output):
+        alpha = self._read_alpha_file(self.alpha_file)
         max_size = len(alpha)
         output = ''
         k = self.key.get()
-        for c in input:
+        for c in re.sub('[^a-zA-Z]+', '', input).lower():
             new_position = alpha[c] + k
             if new_position > max_size:
                 new_position -= max_size
@@ -44,12 +46,11 @@ class PureDisplacement(Frame):
 
         txt_output.delete(1.0, 'end')
         txt_output.insert('end', output.upper())
-        print(self.alpha)
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
         tpl_pd.resizable(0, 0)
-        tpl_pd.title(f'{self.name}')
+        tpl_pd.title(f'{self.name} - {self.alpha_title}')
 
         # Top frame.
         frm_0 = Frame(
@@ -69,7 +70,7 @@ class PureDisplacement(Frame):
         btn_crypt = Button(
             frm_0L,
             text='Crypt',
-            command=lambda: self._displacement(
+            command=lambda: self._crypt(
                 txt_input.get(1.0, 'end').rstrip().replace(' ', ''),
                 txt_output
             )

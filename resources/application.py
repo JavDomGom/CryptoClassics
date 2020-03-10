@@ -37,7 +37,9 @@ Foundation, either version 3 of the License.'''
         self.Z_26 = 'Z_26.json'
         self.Z_36 = 'Z_36.json'
         self.ASCII_191 = 'ASCII_191.json'
-        self.alpha = StringVar()
+        self.alpha_title = StringVar()
+        self.alpha_file = StringVar()
+        self.alpha_regex = StringVar()
 
         self.pack()
         self._configure_logs()
@@ -60,7 +62,13 @@ Foundation, either version 3 of the License.'''
     def _build_cryptosystem(self, cs):
         print(cs)
         if cs == 'Pure displacement':
-            pd(self.master, cs, self.alpha)
+            pd(self.master, cs, self.alpha_title, self.alpha_file)
+
+    def _set_alpha(self, op):
+        self.alpha_title.set(op[0])
+        self.alpha_file.set(op[1])
+        print(f'{self.alpha_title.get()}')
+        print(f'{self.alpha_file.get()}')
 
     def _create_menubar(self):
         # Build menubar.
@@ -120,23 +128,24 @@ Foundation, either version 3 of the License.'''
 
         # Build Options menu.
         options_list = [
-            ('Spanish Z27 (A-Z)', f'{self.json_path}/{self.Z_27}'),
-            ('Spanish Z37 (A-Z, 0-9)', f'{self.json_path}/{self.Z_37}'),
-            ('English Z26 (A-Z)', f'{self.json_path}/{self.Z_26}'),
-            ('English Z36 (A-Z, 0-9)', f'{self.json_path}/{self.Z_36}'),
-            ('ASCII 191', f'{self.json_path}/{self.ASCII_191}')
+            ('Spanish Z27 (A-Z)', f'{self.json_path}/{self.Z_27}', '[^a-zA-Z]+'),
+            ('Spanish Z37 (A-Z, 0-9)', f'{self.json_path}/{self.Z_37}', '[^0-9a-zA-Z]+'),
+            ('English Z26 (A-Z)', f'{self.json_path}/{self.Z_26}', '[^a-zA-Z]+'),
+            ('English Z36 (A-Z, 0-9)', f'{self.json_path}/{self.Z_36}', '[^0-9a-zA-Z]+'),
+            ('ASCII 191', f'{self.json_path}/{self.ASCII_191}', '[^a-zA-Z]+')
         ]
 
         options_menu = Menu(menubar, tearoff=0)
         for op in options_list:
             options_menu.add_radiobutton(
                 label=op[0],
-                variable=self.alpha,
-                value=op[1]
+                variable=self.alpha_file,
+                value=op[1],
+                command=lambda op=op: self._set_alpha(op)
             )
 
         # Set first element by default.
-        self.alpha.set(options_list[0][1])
+        self._set_alpha(options_list[0])
 
         # Build Help menu.
         help_menu = Menu(menubar, tearoff=0)
