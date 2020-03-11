@@ -61,14 +61,17 @@ Foundation, either version 3 of the License.'''
 
     def _build_cryptosystem(self, cs):
         print(cs)
+        alpha_tuple = (self.alpha_title, self.alpha_file, self.alpha_regex)
         if cs == 'Pure displacement':
-            pd(self.master, cs, self.alpha_title, self.alpha_file)
+            pd(self.master, cs, alpha_tuple)
 
     def _set_alpha(self, op):
         self.alpha_title.set(op[0])
-        self.alpha_file.set(op[1])
+        self.alpha_file.set(f'{self.json_path}/{op[1]}')
+        self.alpha_regex.set(op[2])
         print(f'{self.alpha_title.get()}')
         print(f'{self.alpha_file.get()}')
+        print(f'{self.alpha_regex.get()}')
 
     def _create_menubar(self):
         # Build menubar.
@@ -128,11 +131,11 @@ Foundation, either version 3 of the License.'''
 
         # Build Options menu.
         options_list = [
-            ('Spanish Z27 (A-Z)', f'{self.json_path}/{self.Z_27}', '[^a-zA-Z]+'),
-            ('Spanish Z37 (A-Z, 0-9)', f'{self.json_path}/{self.Z_37}', '[^0-9a-zA-Z]+'),
-            ('English Z26 (A-Z)', f'{self.json_path}/{self.Z_26}', '[^a-zA-Z]+'),
-            ('English Z36 (A-Z, 0-9)', f'{self.json_path}/{self.Z_36}', '[^0-9a-zA-Z]+'),
-            ('ASCII 191', f'{self.json_path}/{self.ASCII_191}', '[^a-zA-Z]+')
+            ('Spanish Z27 (A-Z)', self.Z_27, '[^a-zA-Z]+'),
+            ('Spanish Z37 (A-Z, 0-9)', self.Z_37, '[^0-9a-zA-Z]+'),
+            ('English Z26 (A-Z)', self.Z_26, '[^a-zA-Z]+'),
+            ('English Z36 (A-Z, 0-9)', self.Z_36, '[^0-9a-zA-Z]+'),
+            ('ASCII 191', self.ASCII_191, '[^a-zA-Z]+')
         ]
 
         options_menu = Menu(menubar, tearoff=0)
@@ -140,7 +143,7 @@ Foundation, either version 3 of the License.'''
             options_menu.add_radiobutton(
                 label=op[0],
                 variable=self.alpha_file,
-                value=op[1],
+                value=f'{self.json_path}/{op[1]}',
                 command=lambda op=op: self._set_alpha(op)
             )
 

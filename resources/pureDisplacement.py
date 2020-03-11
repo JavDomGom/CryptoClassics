@@ -1,18 +1,20 @@
 import time
 import json
 import re
+from unicodedata import normalize
 from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, IntVar
 from tkinter.ttk import Progressbar, Separator, Combobox
 
 
 class PureDisplacement(Frame):
 
-    def __init__(self, master, name, alpha_title, alpha_file):
+    def __init__(self, master, name, alpha_tuple):
         super().__init__(master)
         self.master = master
         self.name = name
-        self.alpha_title = alpha_title.get()
-        self.alpha_file = alpha_file.get()
+        self.alpha_title = alpha_tuple[0].get()
+        self.alpha_file = alpha_tuple[1].get()
+        self.alpha_regex = alpha_tuple[2].get()
         self.padx = 3
         self.pady = 3
         self.txt_width = 50
@@ -36,7 +38,15 @@ class PureDisplacement(Frame):
         max_size = len(alpha)
         output = ''
         k = self.key.get()
-        for c in re.sub('[^a-zA-Z]+', '', input).lower():
+        for c in re.sub(
+            self.alpha_regex,
+            '',
+            re.sub(
+                r'([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+',
+                r'\1',
+                normalize('NFD', input), 0, re.I
+            )
+        ).lower():
             new_position = alpha[c] + k
             if new_position > max_size:
                 new_position -= max_size
