@@ -98,6 +98,15 @@ class PureDisplacement(Frame):
             row=0, column=1, padx=self.padx, pady=self.pady, sticky='w'
         )
 
+        lbl_key = Label(
+            frm_0L,
+            text='Key:',
+            anchor='e'
+        )
+        lbl_key.grid(
+            row=0, column=2, padx=self.padx, pady=self.pady, sticky='e'
+        )
+
         def set_key(event):
             self.key.set(cb_key.get())
 
@@ -109,7 +118,7 @@ class PureDisplacement(Frame):
             '<<ComboboxSelected>>', set_key
         )
         cb_key.grid(
-            row=0, column=2, padx=self.padx, pady=self.pady, sticky='ns'
+            row=0, column=3, padx=self.padx, pady=self.pady, sticky='ns'
         )
 
         btn_help = Button(
@@ -118,7 +127,7 @@ class PureDisplacement(Frame):
             command=self.master.destroy
         )
         btn_help.grid(
-            row=0, column=3, padx=self.padx, pady=self.pady, sticky='w'
+            row=0, column=4, padx=self.padx, pady=self.pady, sticky='w'
         )
 
         # Top frame right.
