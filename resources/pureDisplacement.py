@@ -57,6 +57,30 @@ class PureDisplacement(Frame):
         txt_output.delete(1.0, 'end')
         txt_output.insert('end', output.upper())
 
+    def _decrypt(self, input, txt_output):
+        alpha = self._read_alpha_file(self.alpha_file)
+        max_size = len(alpha)
+        output = ''
+        k = self.key.get()
+        for c in re.sub(
+            self.alpha_regex,
+            '',
+            re.sub(
+                r'([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+',
+                r'\1',
+                normalize('NFD', input), 0, re.I
+            )
+        ).lower():
+            new_position = alpha[c] - k
+            if new_position > max_size:
+                new_position -= max_size
+            for kz, vz in alpha.items():
+                if new_position == vz:
+                    output += kz
+
+        txt_output.delete(1.0, 'end')
+        txt_output.insert('end', output.upper())
+
     def _show(self):
         tpl_pd = Toplevel(self.master)
         tpl_pd.resizable(0, 0)
@@ -92,7 +116,10 @@ class PureDisplacement(Frame):
         btn_decrypt = Button(
             frm_0L,
             text='Decrypt',
-            command=self.master.destroy
+            command=lambda: self._decrypt(
+                txt_input.get(1.0, 'end').rstrip().replace(' ', ''),
+                txt_output
+            )
         )
         btn_decrypt.grid(
             row=0, column=1, padx=self.padx, pady=self.pady, sticky='w'
