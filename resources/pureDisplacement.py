@@ -33,12 +33,13 @@ class PureDisplacement(Frame):
         except FileNotFoundError:
             return False
 
-    def _crypt(self, input, txt_output):
+    def _crypt(self, input, txt_output, progressBar):
         alpha = self._read_alpha_file(self.alpha_file)
         max_size = len(alpha)
+        progressBar['maximum'] = len(input)
         output = ''
         k = self.key.get()
-        for c in re.sub(
+        for i, c in enumerate(re.sub(
             self.alpha_regex,
             '',
             re.sub(
@@ -46,7 +47,10 @@ class PureDisplacement(Frame):
                 r'\1',
                 normalize('NFD', input), 0, re.I
             )
-        ).lower():
+        ).lower()):
+            # time.sleep(0.005)
+            progressBar['value'] = i + 1
+            progressBar.update()
             new_position = alpha[c] + k
             if new_position > max_size:
                 new_position -= max_size
@@ -106,7 +110,8 @@ class PureDisplacement(Frame):
             text='Crypt',
             command=lambda: self._crypt(
                 txt_input.get(1.0, 'end').rstrip().replace(' ', ''),
-                txt_output
+                txt_output,
+                progressBar
             )
         )
         btn_crypt.grid(
@@ -299,13 +304,7 @@ class PureDisplacement(Frame):
             frm_2,
             orient='horizontal',
             mode='determinate',
-            length=500,
-            maximum=100
+            length=500
         )
         progressBar.place(anchor='sw', x=1, bordermode="outside")
         progressBar.grid(row=0, column=1, pady=self.pady, sticky='w')
-
-        for i in range(101):
-            time.sleep(0.05)
-            progressBar["value"] = i
-            progressBar.update()
