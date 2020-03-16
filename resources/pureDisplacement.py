@@ -1,8 +1,8 @@
-import time
 import json
 import re
 from unicodedata import normalize
-from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, IntVar
+from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, IntVar, \
+                    filedialog
 from tkinter.ttk import Progressbar, Separator, Combobox
 
 
@@ -84,6 +84,15 @@ class PureDisplacement(Frame):
 
         txt_output.delete(1.0, 'end')
         txt_output.insert('end', output.upper())
+
+    def _load_file(self, txt_input):
+        file_types = [('All files', '*')]
+        dialog = filedialog.Open(self, filetypes=file_types)
+        filename = dialog.show()
+
+        if filename != '':
+            with open(filename, 'r') as f:
+                txt_input.insert('end', f.read())
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
@@ -236,7 +245,7 @@ class PureDisplacement(Frame):
         btn_open_input_file = Button(
             frm_1,
             text='Open',
-            command=self.master.destroy
+            command=lambda: self._load_file(txt_input)
         )
         btn_open_input_file.grid(
             row=0, column=3, padx=self.padx, pady=self.pady+5, sticky='s'
