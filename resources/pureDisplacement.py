@@ -33,6 +33,13 @@ class PureDisplacement(Frame):
         except FileNotFoundError:
             return False
 
+    def _get_regex(self, input):
+        return re.sub(
+            r'([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+',
+            r'\1',
+            normalize('NFD', input), 0, re.I
+        )
+
     def _crypt(self, input, txt_output, progressBar):
         alpha = self._read_alpha_file(self.alpha_file)
         max_size = len(alpha)
@@ -42,11 +49,7 @@ class PureDisplacement(Frame):
         for i, c in enumerate(re.sub(
             self.alpha_regex,
             '',
-            re.sub(
-                r'([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+',
-                r'\1',
-                normalize('NFD', input), 0, re.I
-            )
+            self._get_regex(input)
         ).lower()):
             # time.sleep(0.005)
             progressBar['value'] = i + 1
@@ -69,11 +72,7 @@ class PureDisplacement(Frame):
         for c in re.sub(
             self.alpha_regex,
             '',
-            re.sub(
-                r'([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+',
-                r'\1',
-                normalize('NFD', input), 0, re.I
-            )
+            self._get_regex(input)
         ).lower():
             new_position = alpha[c] - k
             if new_position > max_size:
@@ -85,13 +84,15 @@ class PureDisplacement(Frame):
         txt_output.delete(1.0, 'end')
         txt_output.insert('end', output.upper())
 
-    def _load_file(self, txt_input):
+    def _load_file(self, txt_input, txt_output):
         file_types = [('All files', '*')]
         dialog = filedialog.Open(self, filetypes=file_types)
         filename = dialog.show()
 
         if filename != '':
             with open(filename, 'r') as f:
+                txt_input.delete(1.0, 'end')
+                txt_output.delete(1.0, 'end')
                 txt_input.insert('end', f.read())
 
     def _show(self):
@@ -245,7 +246,7 @@ class PureDisplacement(Frame):
         btn_open_input_file = Button(
             frm_1,
             text='Open',
-            command=lambda: self._load_file(txt_input)
+            command=lambda: self._load_file(txt_input, txt_output)
         )
         btn_open_input_file.grid(
             row=0, column=3, padx=self.padx, pady=self.pady+5, sticky='s'
