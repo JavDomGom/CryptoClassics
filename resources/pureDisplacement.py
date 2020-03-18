@@ -43,14 +43,15 @@ class PureDisplacement(Frame):
     def _crypt(self, input, txt_output, progressBar):
         alpha = self._read_alpha_file(self.alpha_file)
         max_size = len(alpha)
-        progressBar['maximum'] = len(input)
-        output = ''
-        k = self.key.get()
-        for i, c in enumerate(re.sub(
+        input = re.sub(
             self.alpha_regex,
             '',
             self._get_regex(input)
-        ).lower()):
+        ).lower()
+        progressBar['maximum'] = len(input)
+        output = ''
+        k = self.key.get()
+        for i, c in enumerate(input):
             # time.sleep(0.005)
             progressBar['value'] = i + 1
             progressBar.update()
