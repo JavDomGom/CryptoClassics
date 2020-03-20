@@ -98,7 +98,7 @@ class PureDisplacement(Frame):
 
     def _show(self):
         tpl_pd = Toplevel(self.master)
-        tpl_pd.resizable(0, 0)
+        tpl_pd.resizable(1, 1)
         tpl_pd.title(f'{self.name} - {self.alpha_title}')
 
         # Top frame.
