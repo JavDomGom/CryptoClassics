@@ -1,8 +1,9 @@
 import json
 import re
+import time
 from unicodedata import normalize
 from tkinter import Toplevel, Frame, Text, Scrollbar, Button, Label, IntVar, \
-                    filedialog
+                    StringVar, filedialog
 from tkinter.ttk import Progressbar, Separator, Combobox
 
 
@@ -15,6 +16,7 @@ class PureDisplacement(Frame):
         self.alpha_title = alpha_tuple[0].get()
         self.alpha_file = alpha_tuple[1].get()
         self.alpha_regex = alpha_tuple[2].get()
+        self.time_exec = StringVar()
         self.padx = 3
         self.pady = 3
         self.txt_width = 50
@@ -51,6 +53,9 @@ class PureDisplacement(Frame):
         progressBar['maximum'] = len(input)
         output = ''
         k = self.key.get()
+
+        start_time = time.time()
+
         for i, c in enumerate(input):
             # time.sleep(0.005)
             progressBar['value'] = i + 1
@@ -61,6 +66,9 @@ class PureDisplacement(Frame):
             for kz, vz in alpha.items():
                 if new_position == vz:
                     output += kz
+
+        self.time_exec.set(f'({time.time() - start_time})')
+        # lbl_time_exec.config(text=f'Time: {self.time_exec.get()}')
 
         txt_output.delete(1.0, 'end')
         txt_output.insert('end', output.upper())
@@ -210,7 +218,7 @@ class PureDisplacement(Frame):
         )
         frm_1.pack(expand=True, fill='both')
         frm_1.grid_propagate(True)
-        frm_1.grid_columnconfigure(0, weight=1)
+        frm_1.grid_columnconfigure(1, weight=1)
         frm_1.grid_rowconfigure(0, weight=1)
         frm_1.grid_rowconfigure(1, weight=1)
 
@@ -292,30 +300,28 @@ class PureDisplacement(Frame):
             row=1, column=3, padx=self.padx, pady=self.pady+5, sticky='s'
         )
 
-        # Bottom frame.
-        frm_2 = Frame(
-            tpl_pd,
-            bd=5
-        )
-        frm_2.pack(expand=True, fill='both')
-        frm_2.grid_propagate(True)
-        frm_2.grid_columnconfigure(0, weight=1)
-        frm_2.grid_rowconfigure(0, weight=1)
-
         lbl_input = Label(
-            frm_2,
+            frm_1,
             text='Ready:',
             anchor='w'
         )
         lbl_input.grid(
-            row=0, column=0, padx=self.padx, pady=self.pady, sticky='w'
+            row=2, column=0, padx=self.padx, pady=self.pady, sticky='w'
         )
 
         progressBar = Progressbar(
-            frm_2,
+            frm_1,
             orient='horizontal',
             mode='determinate',
             length=500
         )
         progressBar.place(anchor='sw', x=1, bordermode="outside")
-        progressBar.grid(row=0, column=1, pady=self.pady, sticky='w')
+        progressBar.grid(row=2, column=1, pady=self.pady, sticky='w')
+
+        lbl_time_exec = Label(
+            frm_1,
+            text='Time: '
+        )
+        lbl_time_exec.grid(
+            row=2, column=3, padx=self.padx, pady=self.pady+5, sticky='w'
+        )
